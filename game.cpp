@@ -38,26 +38,35 @@ bool Game::makeMove(Player &player, int row, int col)
         return false;
 
     board[row][col] = player.getSymbol();
+
     return true;
 }
 
 bool Game::checkWinner(Player &player)
 {
-    char s = player.getSymbol();
+    char symbol = player.getSymbol();
 
     for(int i = 0; i < 3; i++)
     {
-        if(board[i][0] == s && board[i][1] == s && board[i][2] == s)
+        if(board[i][0] == symbol &&
+           board[i][1] == symbol &&
+           board[i][2] == symbol)
             return true;
 
-        if(board[0][i] == s && board[1][i] == s && board[2][i] == s)
+        if(board[0][i] == symbol &&
+           board[1][i] == symbol &&
+           board[2][i] == symbol)
             return true;
     }
 
-    if(board[0][0] == s && board[1][1] == s && board[2][2] == s)
+    if(board[0][0] == symbol &&
+       board[1][1] == symbol &&
+       board[2][2] == symbol)
         return true;
 
-    if(board[0][2] == s && board[1][1] == s && board[2][0] == s)
+    if(board[0][2] == symbol &&
+       board[1][1] == symbol &&
+       board[2][0] == symbol)
         return true;
 
     return false;
@@ -87,7 +96,7 @@ void Game::startGame()
 
         int row, col;
 
-        cout << current->getName() 
+        cout << current->getName()
              << " enter row and column (1-3): ";
 
         cin >> row >> col;
@@ -100,15 +109,35 @@ void Game::startGame()
             if(checkWinner(*current))
             {
                 displayBoard();
-                cout << current->getName() << " wins!" << endl;
-                current->increaseScore();
+
+                cout << current->getName()
+                     << " wins!" << endl;
+
+                current->addWin();
+
+                if(current == &player1)
+                    player2.addLoss();
+                else
+                    player1.addLoss();
+
+                player1.showStats();
+                player2.showStats();
+
                 break;
             }
 
             if(isDraw())
             {
                 displayBoard();
+
                 cout << "Match Draw!" << endl;
+
+                player1.addDraw();
+                player2.addDraw();
+
+                player1.showStats();
+                player2.showStats();
+
                 break;
             }
 
