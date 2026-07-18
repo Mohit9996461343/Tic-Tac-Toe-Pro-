@@ -1,5 +1,6 @@
 #include <iostream>
 #include "game.h"
+#include "history.h"
 
 using namespace std;
 
@@ -13,10 +14,11 @@ void showInstructions()
     cout << "1. Player X starts the game.\n";
     cout << "2. Enter row and column numbers (1-3).\n";
     cout << "3. Make three symbols in a row to win.\n";
-    cout << "4. Avoid choosing an already occupied box.\n";
+    cout << "4. The game saves your statistics automatically.\n";
 
     cout << "============================\n\n";
 }
+
 
 
 int main()
@@ -32,7 +34,9 @@ int main()
 
         cout << "1. Start New Game\n";
         cout << "2. How to Play\n";
-        cout << "3. Exit\n";
+        cout << "3. View Game History\n";
+        cout << "4. Exit\n";
+
 
         cout << "Enter your choice: ";
         cin >> choice;
@@ -57,7 +61,6 @@ int main()
             Player player2(name2, 'O');
 
 
-            // Load previous records
             player1.loadProfile();
             player2.loadProfile();
 
@@ -70,7 +73,6 @@ int main()
 
 
 
-            // Save updated records
             player1.saveProfile();
             player2.saveProfile();
 
@@ -89,6 +91,13 @@ int main()
 
         else if(choice == 3)
         {
+            History::showHistory();
+        }
+
+
+
+        else if(choice == 4)
+        {
             cout << "\nThanks for playing Tic Tac Toe Pro!\n";
             break;
         }
@@ -97,7 +106,7 @@ int main()
 
         else
         {
-            cout << "Invalid choice! Try again.\n";
+            cout << "\nInvalid choice! Try again.\n";
         }
 
     }
