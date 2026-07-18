@@ -5,6 +5,7 @@
 using namespace std;
 
 
+
 Player::Player(string n, char s)
 {
     name = n;
@@ -16,10 +17,12 @@ Player::Player(string n, char s)
 }
 
 
+
 string Player::getName()
 {
     return name;
 }
+
 
 
 char Player::getSymbol()
@@ -28,10 +31,12 @@ char Player::getSymbol()
 }
 
 
+
 int Player::getWins()
 {
     return wins;
 }
+
 
 
 int Player::getDraws()
@@ -40,10 +45,12 @@ int Player::getDraws()
 }
 
 
+
 int Player::getLosses()
 {
     return losses;
 }
+
 
 
 void Player::addWin()
@@ -52,16 +59,21 @@ void Player::addWin()
 }
 
 
+
 void Player::addDraw()
 {
     draws++;
 }
 
 
+
 void Player::addLoss()
 {
     losses++;
 }
+
+
+
 
 
 void Player::showStats()
@@ -75,10 +87,53 @@ void Player::showStats()
 }
 
 
-// Save player data into file
+
+
+
+void Player::showProfile()
+{
+    int totalGames = wins + draws + losses;
+
+
+    double winRate = 0;
+
+
+    if(totalGames > 0)
+    {
+        winRate = ((double)wins / totalGames) * 100;
+    }
+
+
+
+    cout << "\n============================\n";
+    cout << "       PLAYER PROFILE\n";
+    cout << "============================\n";
+
+
+    cout << "Player       : " << name << endl;
+
+    cout << "Wins         : " << wins << endl;
+
+    cout << "Losses       : " << losses << endl;
+
+    cout << "Draws        : " << draws << endl;
+
+    cout << "Games Played : " << totalGames << endl;
+
+    cout << "Win Rate     : " << winRate << "%" << endl;
+
+
+    cout << "============================\n";
+}
+
+
+
+
+
 void Player::saveProfile()
 {
     ofstream file("players.txt", ios::app);
+
 
     if(file.is_open())
     {
@@ -87,35 +142,45 @@ void Player::saveProfile()
              << draws << " "
              << losses << endl;
 
+
         file.close();
     }
 }
 
 
-// Load player data from file
+
+
+
 void Player::loadProfile()
 {
     ifstream file("players.txt");
 
+
     string savedName;
+
     int savedWins;
     int savedDraws;
     int savedLosses;
 
 
-    while(file >> savedName 
-              >> savedWins 
-              >> savedDraws 
+
+    while(file >> savedName
+              >> savedWins
+              >> savedDraws
               >> savedLosses)
     {
+
         if(savedName == name)
         {
             wins = savedWins;
             draws = savedDraws;
             losses = savedLosses;
+
             break;
         }
     }
+
+
 
     file.close();
 }

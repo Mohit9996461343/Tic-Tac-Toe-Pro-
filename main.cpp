@@ -2,6 +2,7 @@
 #include "game.h"
 #include "history.h"
 #include "auth.h"
+#include "leaderboard.h"
 
 using namespace std;
 
@@ -22,24 +23,36 @@ void showInstructions()
 
 
 
+
+
 void gameMenu(string username)
 {
     int choice;
 
 
+
+    Player currentUser(username,'X');
+
+    currentUser.loadProfile();
+
+
+
     while(true)
     {
+
         cout << "\n============================\n";
         cout << "       TIC TAC TOE PRO\n";
         cout << " Welcome, " << username << endl;
         cout << "============================\n";
 
 
-        cout << "1. Two Player Game\n";
-        cout << "2. Play Against Computer\n";
-        cout << "3. How to Play\n";
-        cout << "4. View Game History\n";
-        cout << "5. Logout\n";
+       cout << "1. Two Player Game\n";
+cout << "2. Play Against Computer\n";
+cout << "3. View Profile\n";
+cout << "4. How to Play\n";
+cout << "5. View Game History\n";
+cout << "6. View Leaderboard\n";
+cout << "7. Logout\n";
 
 
         cout << "Enter your choice: ";
@@ -47,9 +60,10 @@ void gameMenu(string username)
 
 
 
+
         if(choice == 1)
         {
-            string name1, name2;
+            string name1,name2;
 
 
             cout << "\nEnter Player 1 name: ";
@@ -63,6 +77,7 @@ void gameMenu(string username)
 
             Player player1(name1,'X');
             Player player2(name2,'O');
+
 
 
             player1.loadProfile();
@@ -84,6 +99,7 @@ void gameMenu(string username)
 
 
 
+
         else if(choice == 2)
         {
             int level;
@@ -100,25 +116,18 @@ void gameMenu(string username)
 
 
 
-            Player player(username,'X');
-
             Player computer("Computer",'O');
 
 
 
-            player.loadProfile();
-
-
-
-            Game game(player,computer,true,level);
-
+            Game game(currentUser,computer,true,level);
 
 
             game.startGame();
 
 
 
-            player.saveProfile();
+            currentUser.saveProfile();
         }
 
 
@@ -127,7 +136,7 @@ void gameMenu(string username)
 
         else if(choice == 3)
         {
-            showInstructions();
+            currentUser.showProfile();
         }
 
 
@@ -136,7 +145,7 @@ void gameMenu(string username)
 
         else if(choice == 4)
         {
-            History::showHistory();
+            showInstructions();
         }
 
 
@@ -145,11 +154,21 @@ void gameMenu(string username)
 
         else if(choice == 5)
         {
-            cout << "Logging out...\n";
-            break;
+            History::showHistory();
         }
 
 
+else if(choice == 6)
+{
+    Leaderboard::showLeaderboard();
+}
+
+
+else if(choice == 7)
+{
+    cout << "Logging out...\n";
+    break;
+}    
 
 
 
@@ -159,7 +178,9 @@ void gameMenu(string username)
         }
 
     }
+
 }
+
 
 
 
@@ -167,11 +188,14 @@ void gameMenu(string username)
 
 int main()
 {
+
     int choice;
+
 
 
     while(true)
     {
+
         cout << "\n============================\n";
         cout << "       TIC TAC TOE PRO\n";
         cout << "============================\n";
@@ -189,12 +213,15 @@ int main()
 
         if(choice == 1)
         {
+
             string username;
             string password;
 
 
+
             cout << "Create username: ";
             cin >> username;
+
 
 
             cout << "Create password: ";
@@ -206,6 +233,7 @@ int main()
             {
                 cout << "Registration successful!\n";
             }
+
             else
             {
                 cout << "Username already exists!\n";
@@ -216,8 +244,10 @@ int main()
 
 
 
+
         else if(choice == 2)
         {
+
             string username;
             string password;
 
@@ -225,6 +255,7 @@ int main()
 
             cout << "Username: ";
             cin >> username;
+
 
 
             cout << "Password: ";
@@ -236,7 +267,6 @@ int main()
             {
                 cout << "Login successful!\n";
 
-
                 gameMenu(username);
             }
 
@@ -244,6 +274,7 @@ int main()
             {
                 cout << "Invalid username or password!\n";
             }
+
         }
 
 
@@ -259,12 +290,14 @@ int main()
 
 
 
+
         else
         {
             cout << "Invalid choice!\n";
         }
 
     }
+
 
 
     return 0;

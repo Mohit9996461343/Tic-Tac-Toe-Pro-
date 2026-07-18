@@ -5,8 +5,10 @@
 
 using namespace std;
 
+
 class Player
 {
+
 private:
 
     string name;
@@ -19,30 +21,42 @@ private:
 
 public:
 
+
     Player(string n = "", char s = 'X');
 
 
     string getName();
+
     char getSymbol();
 
 
     int getWins();
+
     int getDraws();
+
     int getLosses();
 
 
+
     void addWin();
+
     void addDraw();
+
     void addLoss();
+
 
 
     void showStats();
 
+    void showProfile();
 
-    // File storage functions
+
+
     void saveProfile();
+
     void loadProfile();
 
 };
+
 
 #endif
