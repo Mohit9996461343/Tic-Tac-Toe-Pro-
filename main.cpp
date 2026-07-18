@@ -14,7 +14,7 @@ void showInstructions()
     cout << "1. Choose game mode.\n";
     cout << "2. Enter row and column numbers (1-3).\n";
     cout << "3. Make three symbols in a row to win.\n";
-    cout << "4. In single player mode, computer plays as O.\n";
+    cout << "4. Computer plays as O in AI mode.\n";
 
     cout << "============================\n\n";
 }
@@ -52,10 +52,8 @@ int main()
             cout << "\nEnter Player 1 name: ";
             cin >> name1;
 
-
             cout << "Enter Player 2 name: ";
             cin >> name2;
-
 
 
             Player player1(name1, 'X');
@@ -81,28 +79,36 @@ int main()
 
 
 
-
-
         else if(choice == 2)
         {
             string name;
+            int level;
 
 
             cout << "\nEnter your name: ";
             cin >> name;
 
 
+            cout << "\nSelect Difficulty:\n";
+            cout << "1. Easy\n";
+            cout << "2. Medium\n";
+            cout << "3. Hard (coming soon)\n";
+
+
+            cout << "Enter level: ";
+            cin >> level;
+
+
 
             Player player(name, 'X');
-
             Player computer("Computer", 'O');
-
 
 
             player.loadProfile();
 
 
-            Game game(player, computer, true);
+
+            Game game(player, computer, true, level);
 
 
             game.startGame();
@@ -117,14 +123,10 @@ int main()
 
 
 
-
-
         else if(choice == 3)
         {
             showInstructions();
         }
-
-
 
 
 
@@ -135,15 +137,11 @@ int main()
 
 
 
-
-
         else if(choice == 5)
         {
             cout << "\nThanks for playing Tic Tac Toe Pro!\n";
             break;
         }
-
-
 
 
 

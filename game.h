@@ -21,6 +21,8 @@ private:
 
     bool singlePlayer;
 
+    int difficulty;
+
 
     void saveHistory(string result);
 
@@ -28,7 +30,7 @@ private:
 public:
 
 
-    Game(Player p1, Player p2, bool aiMode = false);
+    Game(Player p1, Player p2, bool aiMode = false, int level = 1);
 
 
 

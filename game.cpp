@@ -3,10 +3,12 @@
 #include <ctime>
 
 
-Game::Game(Player p1, Player p2, bool aiMode)
+Game::Game(Player p1, Player p2, bool aiMode, int level)
     : player1(p1), player2(p2)
 {
     singlePlayer = aiMode;
+    difficulty = level;
+
 
     for(int i = 0; i < 3; i++)
     {
@@ -91,6 +93,7 @@ bool Game::checkWinner(Player &player)
         return true;
 
 
+
     return false;
 }
 
@@ -109,6 +112,7 @@ bool Game::isDraw()
 
     return true;
 }
+
 
 
 
@@ -139,6 +143,7 @@ void Game::saveHistory(string result)
 
 
 
+
 void Game::startGame()
 {
     Player *current = &player1;
@@ -147,15 +152,32 @@ void Game::startGame()
 
     while(true)
     {
+
         displayBoard();
 
 
 
+        // Computer turn
         if(singlePlayer && current == &player2)
         {
             cout << "Computer is thinking...\n";
 
-            AI::makeMove(board);
+
+            if(difficulty == 1)
+            {
+                AI::makeRandomMove(board);
+            }
+
+            else if(difficulty == 2)
+            {
+                AI::makeMediumMove(board);
+            }
+
+            else
+            {
+                AI::makeMediumMove(board);
+            }
+
 
 
             if(checkWinner(player2))
@@ -167,9 +189,7 @@ void Game::startGame()
                 player2.addWin();
                 player1.addLoss();
 
-
                 saveHistory("Computer won");
-
 
                 break;
             }
@@ -182,13 +202,10 @@ void Game::startGame()
 
                 cout << "Match Draw!\n";
 
-
                 player1.addDraw();
                 player2.addDraw();
 
-
                 saveHistory("Match Draw");
-
 
                 break;
             }
@@ -196,9 +213,9 @@ void Game::startGame()
 
 
             current = &player1;
+
             continue;
         }
-
 
 
 
@@ -218,7 +235,6 @@ void Game::startGame()
 
 
 
-
         if(makeMove(*current,row,col))
         {
 
@@ -231,21 +247,15 @@ void Game::startGame()
                      << " wins!\n";
 
 
-
                 current->addWin();
-
 
 
                 if(current == &player1)
                     player2.addLoss();
-                else
-                    player1.addLoss();
-
 
 
                 player1.showStats();
                 player2.showStats();
-
 
 
                 saveHistory(current->getName() + " won");
@@ -256,17 +266,16 @@ void Game::startGame()
 
 
 
+
             if(isDraw())
             {
                 displayBoard();
-
 
                 cout << "Match Draw!\n";
 
 
                 player1.addDraw();
                 player2.addDraw();
-
 
 
                 saveHistory("Match Draw");
@@ -279,6 +288,7 @@ void Game::startGame()
 
             if(current == &player1)
                 current = &player2;
+
             else
                 current = &player1;
 

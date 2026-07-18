@@ -11,7 +11,9 @@ class AI
 
 public:
 
-    static void makeMove(char board[3][3]);
+    static void makeRandomMove(char board[3][3]);
+
+    static void makeMediumMove(char board[3][3]);
 
 };
 
