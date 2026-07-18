@@ -11,10 +11,10 @@ void showInstructions()
     cout << "        HOW TO PLAY\n";
     cout << "============================\n";
 
-    cout << "1. Player X starts the game.\n";
+    cout << "1. Choose game mode.\n";
     cout << "2. Enter row and column numbers (1-3).\n";
     cout << "3. Make three symbols in a row to win.\n";
-    cout << "4. The game saves your statistics automatically.\n";
+    cout << "4. In single player mode, computer plays as O.\n";
 
     cout << "============================\n\n";
 }
@@ -32,10 +32,11 @@ int main()
         cout << "       TIC TAC TOE PRO\n";
         cout << "============================\n";
 
-        cout << "1. Start New Game\n";
-        cout << "2. How to Play\n";
-        cout << "3. View Game History\n";
-        cout << "4. Exit\n";
+        cout << "1. Two Player Game\n";
+        cout << "2. Play Against Computer\n";
+        cout << "3. How to Play\n";
+        cout << "4. View Game History\n";
+        cout << "5. Exit\n";
 
 
         cout << "Enter your choice: ";
@@ -65,12 +66,10 @@ int main()
             player2.loadProfile();
 
 
-
-            Game game(player1, player2);
+            Game game(player1, player2, false);
 
 
             game.startGame();
-
 
 
             player1.saveProfile();
@@ -82,25 +81,69 @@ int main()
 
 
 
+
+
         else if(choice == 2)
+        {
+            string name;
+
+
+            cout << "\nEnter your name: ";
+            cin >> name;
+
+
+
+            Player player(name, 'X');
+
+            Player computer("Computer", 'O');
+
+
+
+            player.loadProfile();
+
+
+            Game game(player, computer, true);
+
+
+            game.startGame();
+
+
+
+            player.saveProfile();
+
+
+            cout << "\nGame data saved successfully!\n";
+        }
+
+
+
+
+
+        else if(choice == 3)
         {
             showInstructions();
         }
 
 
 
-        else if(choice == 3)
+
+
+        else if(choice == 4)
         {
             History::showHistory();
         }
 
 
 
-        else if(choice == 4)
+
+
+        else if(choice == 5)
         {
             cout << "\nThanks for playing Tic Tac Toe Pro!\n";
             break;
         }
+
+
 
 
 

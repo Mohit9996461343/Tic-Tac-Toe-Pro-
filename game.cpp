@@ -3,8 +3,11 @@
 #include <ctime>
 
 
-Game::Game(Player p1, Player p2) : player1(p1), player2(p2)
+Game::Game(Player p1, Player p2, bool aiMode)
+    : player1(p1), player2(p2)
 {
+    singlePlayer = aiMode;
+
     for(int i = 0; i < 3; i++)
     {
         for(int j = 0; j < 3; j++)
@@ -88,7 +91,6 @@ bool Game::checkWinner(Player &player)
         return true;
 
 
-
     return false;
 }
 
@@ -105,10 +107,8 @@ bool Game::isDraw()
         }
     }
 
-
     return true;
 }
-
 
 
 
@@ -120,6 +120,7 @@ void Game::saveHistory(string result)
     if(file.is_open())
     {
         time_t now = time(0);
+
 
         file << "Result: "
              << result
@@ -143,9 +144,63 @@ void Game::startGame()
     Player *current = &player1;
 
 
+
     while(true)
     {
         displayBoard();
+
+
+
+        if(singlePlayer && current == &player2)
+        {
+            cout << "Computer is thinking...\n";
+
+            AI::makeMove(board);
+
+
+            if(checkWinner(player2))
+            {
+                displayBoard();
+
+                cout << "Computer wins!\n";
+
+                player2.addWin();
+                player1.addLoss();
+
+
+                saveHistory("Computer won");
+
+
+                break;
+            }
+
+
+
+            if(isDraw())
+            {
+                displayBoard();
+
+                cout << "Match Draw!\n";
+
+
+                player1.addDraw();
+                player2.addDraw();
+
+
+                saveHistory("Match Draw");
+
+
+                break;
+            }
+
+
+
+            current = &player1;
+            continue;
+        }
+
+
+
 
 
         int row, col;
@@ -163,6 +218,7 @@ void Game::startGame()
 
 
 
+
         if(makeMove(*current,row,col))
         {
 
@@ -172,11 +228,12 @@ void Game::startGame()
 
 
                 cout << current->getName()
-                     << " wins!" << endl;
+                     << " wins!\n";
 
 
 
                 current->addWin();
+
 
 
                 if(current == &player1)
@@ -199,22 +256,16 @@ void Game::startGame()
 
 
 
-
             if(isDraw())
             {
                 displayBoard();
 
 
-                cout << "Match Draw!" << endl;
+                cout << "Match Draw!\n";
 
 
                 player1.addDraw();
                 player2.addDraw();
-
-
-
-                player1.showStats();
-                player2.showStats();
 
 
 
@@ -226,14 +277,12 @@ void Game::startGame()
 
 
 
-
             if(current == &player1)
                 current = &player2;
             else
                 current = &player1;
 
         }
-
 
         else
         {

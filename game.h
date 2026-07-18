@@ -3,12 +3,14 @@
 
 #include <iostream>
 #include "player.h"
+#include "ai.h"
 
 using namespace std;
 
 
 class Game
 {
+
 private:
 
     char board[3][3];
@@ -17,24 +19,34 @@ private:
     Player player2;
 
 
+    bool singlePlayer;
+
+
     void saveHistory(string result);
 
 
 public:
 
-    Game(Player p1, Player p2);
+
+    Game(Player p1, Player p2, bool aiMode = false);
+
 
 
     void displayBoard();
 
+
     bool makeMove(Player &player, int row, int col);
 
+
     bool checkWinner(Player &player);
+
 
     bool isDraw();
 
 
+
     void startGame();
+
 
 };
 
