@@ -163,20 +163,23 @@ void Game::startGame()
             cout << "Computer is thinking...\n";
 
 
-            if(difficulty == 1)
-            {
-                AI::makeRandomMove(board);
-            }
+           if(difficulty == 1)
+{
+    // Easy AI
+    AI::makeRandomMove(board);
+}
 
-            else if(difficulty == 2)
-            {
-                AI::makeMediumMove(board);
-            }
+else if(difficulty == 2)
+{
+    // Medium AI
+    AI::makeMediumMove(board);
+}
 
-            else
-            {
-                AI::makeMediumMove(board);
-            }
+else if(difficulty == 3)
+{
+    // Hard AI (Minimax)
+    AI::makeHardMove(board);
+}
 
 
 
