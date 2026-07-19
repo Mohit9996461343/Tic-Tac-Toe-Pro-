@@ -1,10 +1,13 @@
 #include <iostream>
+
 #include "game.h"
 #include "history.h"
 #include "auth.h"
 #include "leaderboard.h"
+#include "tournament.h"
 
 using namespace std;
+
 
 
 void showInstructions()
@@ -25,15 +28,16 @@ void showInstructions()
 
 
 
+
 void gameMenu(string username)
 {
     int choice;
 
 
-
     Player currentUser(username,'X');
 
     currentUser.loadProfile();
+
 
 
 
@@ -46,13 +50,14 @@ void gameMenu(string username)
         cout << "============================\n";
 
 
-       cout << "1. Two Player Game\n";
-cout << "2. Play Against Computer\n";
-cout << "3. View Profile\n";
-cout << "4. How to Play\n";
-cout << "5. View Game History\n";
-cout << "6. View Leaderboard\n";
-cout << "7. Logout\n";
+        cout << "1. Two Player Game\n";
+        cout << "2. Play Against Computer\n";
+        cout << "3. Tournament Mode\n";
+        cout << "4. View Profile\n";
+        cout << "5. How to Play\n";
+        cout << "6. View Game History\n";
+        cout << "7. View Leaderboard\n";
+        cout << "8. Logout\n";
 
 
         cout << "Enter your choice: ";
@@ -61,8 +66,10 @@ cout << "7. Logout\n";
 
 
 
+        // Two Player Game
         if(choice == 1)
         {
+
             string name1,name2;
 
 
@@ -85,7 +92,7 @@ cout << "7. Logout\n";
 
 
 
-            Game game(player1,player2,false);
+            Game game(player1,player2,false,0);
 
 
             game.startGame();
@@ -94,18 +101,23 @@ cout << "7. Logout\n";
 
             player1.saveProfile();
             player2.saveProfile();
+
         }
 
 
 
 
 
+
+        // AI Mode
         else if(choice == 2)
         {
+
             int level;
 
 
             cout << "\nSelect Difficulty:\n";
+
             cout << "1. Easy\n";
             cout << "2. Medium\n";
             cout << "3. Hard\n";
@@ -116,6 +128,7 @@ cout << "7. Logout\n";
 
 
 
+
             Player computer("Computer",'O');
 
 
@@ -123,63 +136,124 @@ cout << "7. Logout\n";
             Game game(currentUser,computer,true,level);
 
 
+
             game.startGame();
 
 
 
             currentUser.saveProfile();
+
+            currentUser.loadProfile();
+
         }
 
 
 
 
 
-        else if(choice == 3)
-        {
-            currentUser.showProfile();
-        }
 
 
-
-
-
-        else if(choice == 4)
-        {
-            showInstructions();
-        }
-
-
-
-
-
-        else if(choice == 5)
-        {
-            History::showHistory();
-        }
-
-
-else if(choice == 6)
+        // Tournament Mode
+       else if(choice == 3)
 {
-    Leaderboard::showLeaderboard();
+    Tournament::tournamentMenu();
+
+    currentUser.loadProfile();
 }
 
 
-else if(choice == 7)
-{
-    cout << "Logging out...\n";
-    break;
-}    
+
+
+
+
+
+        // Profile
+        else if(choice == 4)
+        {
+
+            currentUser.loadProfile();
+
+
+            currentUser.showProfile();
+
+        }
+
+
+
+
+
+
+
+        // Instructions
+        else if(choice == 5)
+        {
+
+            showInstructions();
+
+        }
+
+
+
+
+
+
+
+        // History
+        else if(choice == 6)
+        {
+
+            History::showHistory();
+
+        }
+
+
+
+
+
+
+
+        // Leaderboard
+        else if(choice == 7)
+        {
+
+            Leaderboard::showLeaderboard();
+
+        }
+
+
+
+
+
+
+
+        // Logout
+        else if(choice == 8)
+        {
+
+            cout<<"Logging out...\n";
+
+            break;
+
+        }
+
+
+
 
 
 
         else
         {
-            cout << "Invalid choice!\n";
+
+            cout<<"Invalid choice!\n";
+
         }
 
     }
 
 }
+
+
+
 
 
 
@@ -196,6 +270,7 @@ int main()
     while(true)
     {
 
+
         cout << "\n============================\n";
         cout << "       TIC TAC TOE PRO\n";
         cout << "============================\n";
@@ -211,6 +286,11 @@ int main()
 
 
 
+
+
+
+
+        // Register
         if(choice == 1)
         {
 
@@ -219,24 +299,30 @@ int main()
 
 
 
-            cout << "Create username: ";
-            cin >> username;
+            cout<<"Create username: ";
+            cin>>username;
 
 
 
-            cout << "Create password: ";
-            cin >> password;
+            cout<<"Create password: ";
+            cin>>password;
+
+
 
 
 
             if(Auth::registerUser(username,password))
             {
-                cout << "Registration successful!\n";
+
+                cout<<"Registration successful!\n";
+
             }
 
             else
             {
-                cout << "Username already exists!\n";
+
+                cout<<"Username already exists!\n";
+
             }
 
         }
@@ -245,6 +331,11 @@ int main()
 
 
 
+
+
+
+
+        // Login
         else if(choice == 2)
         {
 
@@ -253,26 +344,33 @@ int main()
 
 
 
-            cout << "Username: ";
-            cin >> username;
+            cout<<"Username: ";
+            cin>>username;
 
 
 
-            cout << "Password: ";
-            cin >> password;
+            cout<<"Password: ";
+            cin>>password;
+
+
 
 
 
             if(Auth::loginUser(username,password))
             {
-                cout << "Login successful!\n";
+
+                cout<<"Login successful!\n";
+
 
                 gameMenu(username);
+
             }
 
             else
             {
-                cout << "Invalid username or password!\n";
+
+                cout<<"Invalid username or password!\n";
+
             }
 
         }
@@ -281,11 +379,21 @@ int main()
 
 
 
+
+
+
+
+        // Exit
         else if(choice == 3)
         {
-            cout << "Thanks for playing!\n";
+
+            cout<<"Thanks for playing!\n";
+
             break;
+
         }
+
+
 
 
 
@@ -293,7 +401,9 @@ int main()
 
         else
         {
-            cout << "Invalid choice!\n";
+
+            cout<<"Invalid choice!\n";
+
         }
 
     }

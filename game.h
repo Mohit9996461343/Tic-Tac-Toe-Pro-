@@ -15,8 +15,8 @@ private:
 
     char board[3][3];
 
-    Player player1;
-    Player player2;
+    Player &player1;
+Player &player2;
 
 
     bool singlePlayer;
@@ -30,7 +30,7 @@ private:
 public:
 
 
-    Game(Player p1, Player p2, bool aiMode = false, int level = 1);
+    Game(Player &p1, Player &p2, bool aiMode, int level);
 
 
 
@@ -48,6 +48,8 @@ public:
 
 
     void startGame();
+
+    Player* playGame();
 
 
 };

@@ -3,7 +3,7 @@
 #include <ctime>
 
 
-Game::Game(Player p1, Player p2, bool aiMode, int level)
+Game::Game(Player &p1, Player &p2, bool aiMode, int level)
     : player1(p1), player2(p2)
 {
     singlePlayer = aiMode;
@@ -18,6 +18,7 @@ Game::Game(Player p1, Player p2, bool aiMode, int level)
         }
     }
 }
+
 
 
 
@@ -42,7 +43,8 @@ void Game::displayBoard()
 
 
 
-bool Game::makeMove(Player &player, int row, int col)
+
+bool Game::makeMove(Player &player,int row,int col)
 {
     if(row < 0 || row >= 3 || col < 0 || col >= 3)
         return false;
@@ -59,37 +61,39 @@ bool Game::makeMove(Player &player, int row, int col)
 
 
 
+
+
 bool Game::checkWinner(Player &player)
 {
     char s = player.getSymbol();
 
 
-    for(int i = 0; i < 3; i++)
+    for(int i=0;i<3;i++)
     {
-        if(board[i][0] == s &&
-           board[i][1] == s &&
-           board[i][2] == s)
+        if(board[i][0]==s &&
+           board[i][1]==s &&
+           board[i][2]==s)
             return true;
 
 
-        if(board[0][i] == s &&
-           board[1][i] == s &&
-           board[2][i] == s)
+        if(board[0][i]==s &&
+           board[1][i]==s &&
+           board[2][i]==s)
             return true;
     }
 
 
 
-    if(board[0][0] == s &&
-       board[1][1] == s &&
-       board[2][2] == s)
+    if(board[0][0]==s &&
+       board[1][1]==s &&
+       board[2][2]==s)
         return true;
 
 
 
-    if(board[0][2] == s &&
-       board[1][1] == s &&
-       board[2][0] == s)
+    if(board[0][2]==s &&
+       board[1][1]==s &&
+       board[2][0]==s)
         return true;
 
 
@@ -99,16 +103,20 @@ bool Game::checkWinner(Player &player)
 
 
 
+
+
+
 bool Game::isDraw()
 {
-    for(int i = 0; i < 3; i++)
+    for(int i=0;i<3;i++)
     {
-        for(int j = 0; j < 3; j++)
+        for(int j=0;j<3;j++)
         {
-            if(board[i][j] == ' ')
+            if(board[i][j]==' ')
                 return false;
         }
     }
+
 
     return true;
 }
@@ -116,23 +124,26 @@ bool Game::isDraw()
 
 
 
+
+
+
 void Game::saveHistory(string result)
 {
-    ofstream file("game_history.txt", ios::app);
+    ofstream file("game_history.txt",ios::app);
 
 
     if(file.is_open())
     {
-        time_t now = time(0);
+        time_t now=time(0);
 
 
-        file << "Result: "
-             << result
-             << " | Date: "
-             << ctime(&now);
+        file<<"Result: "
+            <<result
+            <<" | Date: "
+            <<ctime(&now);
 
 
-        file << "----------------------------\n";
+        file<<"----------------------------\n";
 
 
         file.close();
@@ -144,9 +155,25 @@ void Game::saveHistory(string result)
 
 
 
+
+
 void Game::startGame()
 {
-    Player *current = &player1;
+    playGame();
+}
+
+
+
+
+
+
+
+
+
+Player* Game::playGame()
+{
+
+    Player *current=&player1;
 
 
 
@@ -157,65 +184,86 @@ void Game::startGame()
 
 
 
-        // Computer turn
-        if(singlePlayer && current == &player2)
+
+        // COMPUTER TURN
+        if(singlePlayer && current==&player2)
         {
-            cout << "Computer is thinking...\n";
+
+            cout<<"Computer is thinking...\n";
 
 
-           if(difficulty == 1)
-{
-    // Easy AI
-    AI::makeRandomMove(board);
-}
 
-else if(difficulty == 2)
-{
-    // Medium AI
-    AI::makeMediumMove(board);
-}
+            if(difficulty==1)
+                AI::makeRandomMove(board);
 
-else if(difficulty == 3)
-{
-    // Hard AI (Minimax)
-    AI::makeHardMove(board);
-}
+
+            else if(difficulty==2)
+                AI::makeMediumMove(board);
+
+
+            else if(difficulty==3)
+                AI::makeHardMove(board);
+
+
+
 
 
 
             if(checkWinner(player2))
             {
+
                 displayBoard();
 
-                cout << "Computer wins!\n";
+                cout<<"Computer wins!\n";
+
 
                 player2.addWin();
                 player1.addLoss();
 
+
+
                 saveHistory("Computer won");
 
-                break;
+
+                player1.saveProfile();
+
+
+
+                return &player2;
             }
+
+
+
 
 
 
             if(isDraw())
             {
+
                 displayBoard();
 
-                cout << "Match Draw!\n";
+                cout<<"Match Draw!\n";
+
 
                 player1.addDraw();
-                player2.addDraw();
+
+
 
                 saveHistory("Match Draw");
 
-                break;
+
+                player1.saveProfile();
+
+
+
+                return nullptr;
             }
 
 
 
-            current = &player1;
+
+
+            current=&player1;
 
             continue;
         }
@@ -223,83 +271,187 @@ else if(difficulty == 3)
 
 
 
-        int row, col;
 
 
-        cout << current->getName()
-             << " enter row and column (1-3): ";
+
+       int row,col;
 
 
-        cin >> row >> col;
+
+cout << current->getName()
+     << " enter row and column (1-3) or 0 to quit: ";
 
 
-        row--;
-        col--;
+
+cin >> row;
+
+
+
+// Player wants to quit
+if(row == 0)
+{
+    cout << current->getName()
+         << " quit the match!\n";
+
+
+
+    if(current == &player1)
+    {
+        player2.addWin();
+        player1.addLoss();
+
+
+        player1.saveProfile();
+        player2.saveProfile();
+
+
+        return &player2;
+    }
+
+    else
+    {
+        player1.addWin();
+        player2.addLoss();
+
+
+        player1.saveProfile();
+        player2.saveProfile();
+
+
+        return &player1;
+    }
+}
+
+
+
+cin >> col;
+
+
+
+row--;
+col--;
+
+
+
 
 
 
         if(makeMove(*current,row,col))
         {
 
+
             if(checkWinner(*current))
             {
+
                 displayBoard();
 
 
-                cout << current->getName()
-                     << " wins!\n";
+                cout<<current->getName()
+                    <<" wins!\n";
+
 
 
                 current->addWin();
 
 
-                if(current == &player1)
+
+                if(current==&player1)
                     player2.addLoss();
+
+
+
+
+
+                saveHistory(current->getName()+" won");
+
+
+
+
+
+
+                if(singlePlayer)
+                {
+                    player1.saveProfile();
+                }
+
+                else
+                {
+                    player1.saveProfile();
+                    player2.saveProfile();
+                }
+
+
+
 
 
                 player1.showStats();
                 player2.showStats();
 
 
-                saveHistory(current->getName() + " won");
 
-
-                break;
+                return current;
             }
+
+
+
 
 
 
 
             if(isDraw())
             {
+
                 displayBoard();
 
-                cout << "Match Draw!\n";
+
+                cout<<"Match Draw!\n";
+
 
 
                 player1.addDraw();
                 player2.addDraw();
 
 
+
                 saveHistory("Match Draw");
 
 
-                break;
+
+
+                if(singlePlayer)
+                {
+                    player1.saveProfile();
+                }
+                else
+                {
+                    player1.saveProfile();
+                    player2.saveProfile();
+                }
+
+
+
+                return nullptr;
             }
 
 
 
-            if(current == &player1)
-                current = &player2;
+
+
+
+            if(current==&player1)
+                current=&player2;
 
             else
-                current = &player1;
+                current=&player1;
 
         }
+
 
         else
         {
-            cout << "Invalid move! Try again.\n";
+            cout<<"Invalid move! Try again.\n";
         }
+
     }
+
 }

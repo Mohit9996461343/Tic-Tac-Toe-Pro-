@@ -18,6 +18,10 @@ private:
     int draws;
     int losses;
 
+    int points;
+
+    int trophies;     // NEW: Tournament trophies
+
 
 public:
 
@@ -25,9 +29,11 @@ public:
     Player(string n = "", char s = 'X');
 
 
+
     string getName();
 
     char getSymbol();
+
 
 
     int getWins();
@@ -36,6 +42,15 @@ public:
 
     int getLosses();
 
+    int getPoints();
+
+    int getTrophies();     // NEW
+
+
+
+    // Rank System
+    string getRank();
+
 
 
     void addWin();
@@ -43,6 +58,8 @@ public:
     void addDraw();
 
     void addLoss();
+
+    void addTrophy();      // NEW
 
 
 

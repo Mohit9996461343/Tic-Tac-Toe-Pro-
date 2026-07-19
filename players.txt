@@ -1,9 +1,4 @@
-mohit 0 0 0
-verma 0 0 0
-mohit 0 0 0
-kashis 0 0 0
-mohit 0 0 0
-kashis 0 0 0
-mohit 0 0 0
-mohit 0 0 0
-mohit 0 0 0
+mohit 5 1 0 53
+kashis 6 2 0 66
+rohit 0 0 1 -2
+milan 0 0 1 -2
